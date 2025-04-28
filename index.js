@@ -1,10 +1,19 @@
 import express from "express"
 import dotenv from "dotenv"
-import Joi from "joi"
 import logger from "./middlewares/logger.js"
 import genresRouter from "./routes/genres.js"
+import mongoose from "mongoose"
 
 dotenv.config()
+
+try{
+    await mongoose.connect("mongodb://localhost/VIDLY");
+    console.log("Connected to DB");
+}
+catch(e){
+    console.log("Error connecting to DB", e);
+}
+
 const app = express();
 
 app.use(express.json()); 

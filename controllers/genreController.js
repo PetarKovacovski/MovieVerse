@@ -1,73 +1,87 @@
 import Joi from "joi"
-
-const genres = [
-    { id: 1 , name: "horror" }, 
-    { id: 2 , name: "action" }, 
-];
-let lastId = genres.length
+import Genre from "../models/genre.js"
 
 
-export function getGenres(req, res){
+
+export async function getGenres(req, res) {
+    const genres = await Genre.find({}).sort('name');
     res.send(genres);
 };
 
-export function getGenre(req, res){
-    const id = Number(req.params.id)
-    if (isNaN(id)) return res.status(400).send("Bad Request, id NaN");
+export async function getGenre(req, res) {
+    const id = req.params.id
 
-    const genre = genres.find(g => g.id === id);
-    if(!genre) return res.status(404).send(`Genre with ID ${id} not found`);
+    if (!mongoose.Types.ObjectId.isValid(id))
+        return res.status(400).send("Invalid ID format");
 
-    res.send(genre);
+
+    try {
+        const genre = await Genre.findById(id);
+        if (!genre) return res.status(404).send(`Genre with ID ${id} not found`);
+        res.send(genre);
+    } catch (e) {
+        console.error("Error getting genre:", e.message);
+        return res.sendStatus(500);
+    }
+
 }
 
-export function postGenre(req, res) {
-    const {error} = validateGenre(req.body);
-    if(error) return res.status(400).send(`Not a valid genre, ${error.details[0].message}`);
-    lastId++; 
+export async function postGenre(req, res) {
+    const { error } = Genre.joiValidate(req.body);
+    if (error) return res.status(400).send(`Not a valid genre, ${error.details[0].message}`);
 
-    const newGenre ={
-        id: lastId,
+    const genre = new Genre({
         name: req.body.name
-    };
-    genres.push(newGenre);
-    res.send(newGenre);
+    });
+    try {
+        const dbAns = await genre.save();
+        res.send(dbAns);
+    }
+    catch (e) {
+        console.log("ERROR SAVING OBJ: ", e.message);
+        return res.sendStatus(500);
+    }
 };
 
-export function putGenre(req, res){
-    const id = Number(req.params.id)
-    if (isNaN(id)) return res.status(400).send("Bad Request, id NaN");
+export async function putGenre(req, res) {
+    const id = req.params.id
 
-    const {error} = validateGenre(req.body);
-    if(error) return res.status(400).send(`Not a valid genre, ${error.details[0].message}`);
-    
-    const genre = genres.find(g => g.id === id);
-    if(!genre) return res.status(404).send(`Genre with ID ${id} not found`);
+    if (!mongoose.Types.ObjectId.isValid(id))
+        return res.status(400).send("Invalid ID format");
 
-    genre.name = req.body.name;
-   
-    res.send(genre);
+
+    const { error } = Genre.joiValidate(req.body);
+    if (error) return res.status(400).send(`Not a valid genre, ${error.details[0].message}`);
+
+    try {
+        const genre = await Genre.findById(id);
+        if (!genre) return res.status(404).send(`Genre with ID ${id} not found`);
+        genre.set({
+            name: req.body.name,
+        })
+        const dbAns = await genre.save();
+        res.send(dbAns);
+    }
+    catch (e) {
+        console.log("ERROR updating obj: ", e.message);
+        return res.sendStatus(500);
+    }
 };
 
-export function deleteGenre (req, res) {
-    const id = Number(req.params.id)
-    if (isNaN(id)) return res.status(400).send("Bad Request, id NaN");
+export async function deleteGenre(req, res) {
+    const id = req.params.id
 
-    const idx = genres.findIndex(g => g.id === id);
+    if (!mongoose.Types.ObjectId.isValid(id))
+        return res.status(400).send("Invalid ID format");
 
-    if(idx === -1) return res.status(404).send(`Genre with ID ${id} not found`);
 
-    const deleted = genres.splice(idx, 1)[0];
-
-    res.status(200).send(deleted);
+    try {
+        const genre = await Genre.findOneAndDelete({ _id: id });
+        if (!genre) return res.status(404).send(`Genre with ID ${id} not found`);
+        res.status(200).send(genre);
+    }
+    catch (e) {
+        console.error("Error deleting genre:", e.message);
+        return res.sendStatus(500);
+    }
 };
-
-
-function validateGenre(genre){
-    const schema = Joi.object({
-        "name": Joi.string().min(3).required()
-    }).required();
-
-    return schema.validate(genre);
-
-}

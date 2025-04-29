@@ -1,6 +1,6 @@
 import Joi from "joi"
 import Genre from "../models/genre.js"
-
+import mongoose from "mongoose"
 
 
 export async function getGenres(req, res) {

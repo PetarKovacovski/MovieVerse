@@ -3,7 +3,9 @@ import dotenv from "dotenv"
 import logger from "./middlewares/logger.js"
 import genresRouter from "./routes/genres.js"
 import cusotmersRouter from "./routes/customers.js"
+import moviesRouter from "./routes/movies.js"
 import mongoose from "mongoose"
+
 
 dotenv.config()
 
@@ -27,6 +29,7 @@ app.get("/", (req, res)=>{
 
 app.use("/api/genres", genresRouter);
 app.use("/api/customers", cusotmersRouter);
+app.use("/api/movies", moviesRouter);
 
 const PORT = process.env.PORT ?? 3000;
 app.listen(

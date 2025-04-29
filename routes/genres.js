@@ -1,14 +1,15 @@
 import express from "express"
-import * as genreController from "../controllers/genreController.js"
+import * as c from "../controllers/genreController.js"
+import validateObjectId from "../middlewares/validateObjectId.js";
 const router = express.Router();
 
 router.route("/")
-    .get(genreController.getGenres)
-    .post(genreController.postGenre);
+    .get(c.getGenres)
+    .post(c.postGenre);
 
 router.route("/:id")
-    .get(genreController.getGenre)
-    .put(genreController.putGenre)
-    .delete(genreController.deleteGenre);
+    .get(validateObjectId, c.getGenre)
+    .put(validateObjectId, c.putGenre)
+    .delete(validateObjectId, c.deleteGenre);
 
 export default router;

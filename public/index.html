@@ -49,8 +49,8 @@
 
   <div class="section">
     <h2>Create Rental</h2>
-    <label for="customer">Select Customer:</label>
-    <select id="customer"></select>
+    <label for="user">Select User:</label>
+    <select id="user"></select>
 
     <label for="movie">Select Movie:</label>
     <select id="movie"></select>
@@ -70,16 +70,16 @@
 
   <script>
     async function loadOptions() {
-      const [customers, movies, rentals] = await Promise.all([
-        fetch('/api/customers').then(res => res.json()),
+      const [users, movies, rentals] = await Promise.all([
+        fetch('/api/users').then(res => res.json()),
         fetch('/api/movies').then(res => res.json()),
         fetch('/api/rentals').then(res => res.json())
       ]);
 
-      const cSel = document.getElementById('customer');
+      const cSel = document.getElementById('user');
       const mSel = document.getElementById('movie');
 
-      customers.forEach(c => {
+      users.forEach(c => {
         const opt = document.createElement('option');
         opt.value = c._id;
         opt.textContent = c.name;
@@ -105,19 +105,19 @@
       rentals.forEach(r => {
         const div = document.createElement('div');
         div.className = 'rental';
-        div.innerHTML = `<strong>${r.customer.name}</strong> rented <strong>${r.movie.title}</strong><br>On: ${new Date(r.dateRented).toLocaleDateString()}`;
+        div.innerHTML = `<strong>${r.user.name}</strong> rented <strong>${r.movie.title}</strong><br>On: ${new Date(r.dateRented).toLocaleDateString()}`;
         rentalList.appendChild(div);
       });
     }
 
     async function rentMovie() {
-      const customerId = document.getElementById('customer').value;
+      const userId = document.getElementById('user').value;
       const movieId = document.getElementById('movie').value;
 
       const res = await fetch('/api/rentals', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ customerId, movieId })
+        body: JSON.stringify({ userId, movieId })
       });
 
       if (res.ok) {

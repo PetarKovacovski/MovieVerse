@@ -1,61 +1,61 @@
 import { isObjectIdOrHexString, isValidObjectId } from "mongoose";
-import Customer from "../models/customer.js";
+import User from "../models/user.js";
 
-export async function getCustomers(req, res) {
+export async function getUsers(req, res) {
     try {
-        const result = await Customer.find({});
+        const result = await User.find({});
         res.send(result);
     }
     catch (e) {
-        console.log("Error loading customers from DB", e.message);
+        console.log("Error loading users from DB", e.message);
         res.sendStatus(500);
     }
 }
 
-export async function getCustomer(req, res){
+export async function getUser(req, res){
     const id = req.params.id
     if (!isValidObjectId(id)) return res.status(400).send("Invalid ID format");
 
     try {
-        const result = await Customer.findById(id);
+        const result = await User.findById(id);
         if(!result) return res.status(404).send("ID NOT FOUND");
         res.send(result);
     }
     catch (e) {
-        console.log("Error loading customer from DB", e.message);
+        console.log("Error loading user from DB", e.message);
         res.sendStatus(500);
     }
 }
 
-export async function postCustomer(req, res) {
-    const { error } = Customer.joiValidate(req.body)
-    if (error) return res.status(400).send(`Not a valid customer, ${error.details[0].message}`);
+export async function postUser(req, res) {
+    const { error } = User.joiValidate(req.body)
+    if (error) return res.status(400).send(`Not a valid user, ${error.details[0].message}`);
 
-    const customer = new Customer({
+    const user = new User({
         name: req.body.name,
         isGold: req.body.isGold,
         phone: req.body.phone,
     })
 
     try {
-        const result = await customer.save();
+        const result = await user.save();
         res.send(result);
     }
     catch (e) {
-        console.log("Error saving customer to DB", e.message);
+        console.log("Error saving user to DB", e.message);
         res.sendStatus(500);
     }
 }
 
-export async function putCustomer(req, res) {
+export async function putUser(req, res) {
     const id = req.params.id
     if (!isValidObjectId(id)) return res.status(400).send("Invalid ID format");
 
-    const { error } = Customer.joiValidate(req.body)
-    if (error) return res.status(400).send(`Not a valid customer, ${error.details[0].message}`);
+    const { error } = User.joiValidate(req.body)
+    if (error) return res.status(400).send(`Not a valid user, ${error.details[0].message}`);
 
     try{
-        const updated = await Customer.findByIdAndUpdate(id, {
+        const updated = await User.findByIdAndUpdate(id, {
             $set: {
                 name: req.body.name,
                 isGold: req.body.isGold,
@@ -66,23 +66,23 @@ export async function putCustomer(req, res) {
         res.send(updated);
     }
     catch (e) {
-        console.log("Error updating customer to DB", e.message);
+        console.log("Error updating user to DB", e.message);
         res.sendStatus(500);
     }
     
 }
 
-export async function deleteCustomer(req, res){
+export async function deleteUser(req, res){
     const id = req.params.id
     if (!isValidObjectId(id)) return res.status(400).send("Invalid ID format");
 
     try{
-        const deleted = await Customer.findOneAndDelete({_id : id});
+        const deleted = await User.findOneAndDelete({_id : id});
         if(!deleted) return res.status(404).send("ID NOT FOUND");
         res.send(deleted);
     }
     catch(e){
-        console.log("Error deleting customer from DB", e.message);
+        console.log("Error deleting user from DB", e.message);
         res.sendStatus(500);
     }
 

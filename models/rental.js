@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import Joi from "joi"
 
 const rentalSchema = new mongoose.Schema({
-    customer: {
+    user: {
         _id: { type: mongoose.Schema.Types.ObjectId, required: true },
         name: { type: String, required: true },
     },
@@ -20,7 +20,7 @@ const Rental = mongoose.model("Rental", rentalSchema);
 
 Rental.joiValidate = function (rental) {
     const schema = Joi.object({
-        customerId: Joi.string().length(24).hex().required(),
+        userId: Joi.string().length(24).hex().required(),
         movieId: Joi.string().length(24).hex().required(),
     });
 

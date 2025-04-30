@@ -1,10 +1,10 @@
-import Customer from "../models/customer.js";
+import User from "../models/user.js";
 import Movie from "../models/movie.js";
 import Rental from "../models/rental.js";
 import mongoose from "mongoose"
 
 export async function getRentals(req, res) {
-    const result = await Rental.find({});
+    const result = await Rental.find({}).sort("-dateRented");
     return res.send(result);
 }
 export async function postRental(req, res) {
@@ -12,22 +12,22 @@ export async function postRental(req, res) {
     const { error } = Rental.joiValidate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
-    const { customerId, movieId } = req.body;
+    const { userId, movieId } = req.body;
 
 
     const session = await mongoose.startSession();
     session.startTransaction();
     try {
-        const customer = await Customer.findById(customerId).session(session);
+        const user = await User.findById(userId).session(session);
         const movie = await Movie.findById(movieId).session(session);
-        if (!customer || !movie) return res.status(404).send("Customer or Movie ID not found");
+        if (!user || !movie) return res.status(404).send("User or Movie ID not found");
 
         if (movie.numberInStock == 0) return res.status(400).send("Movie is out of stock.");
 
         const rental = new Rental({
-            customer: {
-                _id: customerId,
-                name: customer.name,
+            user: {
+                _id: userId,
+                name: user.name,
             },
             movie: {
                 _id: movieId,

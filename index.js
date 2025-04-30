@@ -2,7 +2,7 @@ import express from "express"
 import dotenv from "dotenv"
 import logger from "./middlewares/logger.js"
 import genresRouter from "./routes/genres.js"
-import customersRouter from "./routes/customers.js"
+import usersRouter from "./routes/users.js"
 import moviesRouter from "./routes/movies.js"
 import rentalsRouter from "./routes/rentals.js"
 import mongoose from "mongoose"
@@ -27,7 +27,7 @@ app.use(logger)
 app.use(express.static('./public'));
 
 app.use("/api/genres", genresRouter);
-app.use("/api/customers", customersRouter);
+app.use("/api/users", usersRouter);
 app.use("/api/movies", moviesRouter);
 app.use("/api/rentals", rentalsRouter);
 

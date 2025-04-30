@@ -1,23 +1,23 @@
 import mongoose, { mongo } from "mongoose"
 import Joi from "joi"
 
-const customerSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     name: { type: String, required: true, minlength: 3 },
     isGold: { type: Boolean, default: false },
     phone: { type: String, required: true, }
 });
 
-const Customer = mongoose.model("Customer", customerSchema);
+const User = mongoose.model("User", userSchema);
 
-Customer.joiValidate = function (customer) {
+User.joiValidate = function (user) {
     const schema = Joi.object({
         name: Joi.string().min(3).required(),
         isGold: Joi.boolean(),
         phone: Joi.string().required()
     });
 
-    return schema.validate(customer);
+    return schema.validate(user);
 };
 
 
-export default Customer;
+export default User;

@@ -39,5 +39,13 @@ User.joiValidate = function (user) {
     return schema.validate(user);
 };
 
+User.joiValidateLogin = function (user) {
+  const schema = Joi.object({
+    email: Joi.string().min(3).max(255).email().required(),
+    password: Joi.string().min(3).max(255).required()
+  });
+  return schema.validate(user);
+};
+
 
 export default User;

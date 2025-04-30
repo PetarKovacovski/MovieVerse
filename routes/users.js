@@ -6,10 +6,10 @@ const router = express.Router()
 
 router.route("/")
     .get(c.getUsers)
-    .post(c.postUser)
+    .post(c.postUser) // REGISTER
 router.route("/:id")
-    .get(validateObjectId, c.getUser)
-    .put(validateObjectId, c.putUser)
-    .delete(validateObjectId, c.deleteUser)
+    //.get(validateObjectId, c.getUser)
+    //.put(validateObjectId, c.putUser)
+    //.delete(validateObjectId, c.deleteUser)
 
 export default router;

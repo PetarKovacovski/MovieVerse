@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vidly Preview</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 600px;
+      margin: auto;
+      padding: 1em;
+    }
+    label, select, button {
+      display: block;
+      margin-top: 1em;
+    }
+    .movie, .rental {
+      margin-bottom: 0.5em;
+      padding: 0.5em;
+      border-bottom: 1px solid #ddd;
+    }
+    h2 {
+      margin-top: 2em;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎬 Vidly Rentals</h1>
+
+  <div>
+    <label for="customer">Select Customer:</label>
+    <select id="customer"></select>
+
+    <label for="movie">Select Movie:</label>
+    <select id="movie"></select>
+
+    <button onclick="rentMovie()">Rent Movie</button>
+  </div>
+
+  <h2>All Movies</h2>
+  <div id="movieList"></div>
+
+  <h2>All Rentals</h2>
+  <div id="rentalList"></div>
+
+  <script>
+    async function loadOptions() {
+      const [customers, movies, rentals] = await Promise.all([
+        fetch('/api/customers').then(res => res.json()),
+        fetch('/api/movies').then(res => res.json()),
+        fetch('/api/rentals').then(res => res.json()),
+      ]);
+
+      const cSel = document.getElementById('customer');
+      const mSel = document.getElementById('movie');
+      const movieList = document.getElementById('movieList');
+      const rentalList = document.getElementById('rentalList');
+
+      customers.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c._id;
+        opt.textContent = c.name;
+        cSel.appendChild(opt);
+      });
+
+      movies.forEach(m => {
+        const opt = document.createElement('option');
+        opt.value = m._id;
+        opt.textContent = `${m.title} (${m.numberInStock})`;
+        mSel.appendChild(opt);
+
+        const div = document.createElement('div');
+        div.className = 'movie';
+        div.textContent = `${m.title} — Stock: ${m.numberInStock} — Rate: $${m.dailyRentalRate}/day`;
+        movieList.appendChild(div);
+      });
+
+      rentals.forEach(r => {
+        const div = document.createElement('div');
+        div.className = 'rental';
+        const rentedOn = new Date(r.dateRented).toLocaleDateString();
+        div.textContent = `🎟️ ${r.customer.name} rented "${r.movie.title}" on ${rentedOn}`;
+        rentalList.appendChild(div);
+      });
+    }
+
+    async function rentMovie() {
+      const customerId = document.getElementById('customer').value;
+      const movieId = document.getElementById('movie').value;
+
+      const res = await fetch('/api/rentals', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ customerId, movieId })
+      });
+
+      if (res.ok) {
+        alert('Rental created!');
+        location.reload();
+      } else {
+        const msg = await res.text();
+        alert('Error: ' + msg);
+      }
+    }
+
+    loadOptions();
+  </script>
+</body>
+</html>

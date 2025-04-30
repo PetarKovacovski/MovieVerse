@@ -56,9 +56,3 @@ export async function postRental(req, res) {
     }
 
 }
-
-export function getRental(req, res) {
-    const id = req.params.id;
-
-
-}

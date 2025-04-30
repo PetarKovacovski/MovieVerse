@@ -8,7 +8,7 @@ router.route("/")
     .post(c.postRental);
 
 router.route("/:id")
-    .get(validateObjectId, c.getRental)
+    //.get(validateObjectId, c.getRental)
     //.put(validateObjectId, c.putRental) not needed now
     //.delete(validateObjectId, c.deleteRental);
 

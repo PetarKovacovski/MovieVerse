@@ -24,9 +24,7 @@ app.use(express.json());
 app.use(logger)
 
 
-app.get("/", (req, res)=>{
-    res.send("Welcome to the API!");
-});
+app.use(express.static('./public'));
 
 app.use("/api/genres", genresRouter);
 app.use("/api/customers", customersRouter);

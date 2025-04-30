@@ -2,8 +2,9 @@ import express from "express"
 import dotenv from "dotenv"
 import logger from "./middlewares/logger.js"
 import genresRouter from "./routes/genres.js"
-import cusotmersRouter from "./routes/customers.js"
+import customersRouter from "./routes/customers.js"
 import moviesRouter from "./routes/movies.js"
+import rentalsRouter from "./routes/rentals.js"
 import mongoose from "mongoose"
 
 
@@ -28,8 +29,9 @@ app.get("/", (req, res)=>{
 });
 
 app.use("/api/genres", genresRouter);
-app.use("/api/customers", cusotmersRouter);
+app.use("/api/customers", customersRouter);
 app.use("/api/movies", moviesRouter);
+app.use("/api/rentals", rentalsRouter);
 
 const PORT = process.env.PORT ?? 3000;
 app.listen(

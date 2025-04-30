@@ -11,10 +11,6 @@ export async function getGenres(req, res) {
 export async function getGenre(req, res) {
     const id = req.params.id
 
-    if (!mongoose.Types.ObjectId.isValid(id))
-        return res.status(400).send("Invalid ID format");
-
-
     try {
         const genre = await Genre.findById(id);
         if (!genre) return res.status(404).send(`Genre with ID ${id} not found`);
@@ -46,10 +42,6 @@ export async function postGenre(req, res) {
 export async function putGenre(req, res) {
     const id = req.params.id
 
-    if (!mongoose.Types.ObjectId.isValid(id))
-        return res.status(400).send("Invalid ID format");
-
-
     const { error } = Genre.joiValidate(req.body);
     if (error) return res.status(400).send(`Not a valid genre, ${error.details[0].message}`);
 
@@ -70,10 +62,6 @@ export async function putGenre(req, res) {
 
 export async function deleteGenre(req, res) {
     const id = req.params.id
-
-    if (!mongoose.Types.ObjectId.isValid(id))
-        return res.status(400).send("Invalid ID format");
-
 
     try {
         const genre = await Genre.findOneAndDelete({ _id: id });

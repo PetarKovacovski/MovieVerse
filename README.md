@@ -10,7 +10,6 @@ A basic Node.js API for managing users, authentication, movie genres, rentals, a
    ```bash
    git clone https://github.com/PetarKovacovski/MovieVerse
    cd MovieVerse
-````
 
 2. **Install dependencies**
 

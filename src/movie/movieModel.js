@@ -1,6 +1,6 @@
 import mongoose from "mongoose"
 import Joi from "joi"
-import { genreSchema } from "./genre.js";
+import { genreSchema } from "../genre/genreModel.js";
 const movieSchema = new mongoose.Schema({
     title: { type: String, required: true, minLength: 5, maxLength: 255 },
     genre: {

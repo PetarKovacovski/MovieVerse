@@ -1,5 +1,5 @@
 import { isObjectIdOrHexString, isValidObjectId } from "mongoose";
-import User from "../models/user.js";
+import User from "./userModel.js";
 
 
 export async function postUser(req, res) {

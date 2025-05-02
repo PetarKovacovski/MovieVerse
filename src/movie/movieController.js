@@ -1,5 +1,5 @@
-import Genre from "../models/genre.js";
-import Movie from "../models/movie.js";
+import Genre from "../genre/genreModel.js";
+import Movie from "./movieModel.js";
 
 export async function getMovies(req, res) {
     try {

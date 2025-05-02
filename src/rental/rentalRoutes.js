@@ -1,7 +1,7 @@
 import express from "express"
-import * as c from "../controllers/rentalController.js"
-import validateObjectId from "../middlewares/validateObjectId.js";
-import auth from "../middlewares/auth.js";
+import * as c from "./rentalController.js"
+import validateObjectId from "../middleware/validateObjectId.js";
+import auth from "../middleware/auth.js";
 
 const router = express.Router();
 

@@ -1,4 +1,4 @@
-import User from "../models/user.js";
+import User from "../user/userModel.js";
 import argon2 from "argon2"
 
 

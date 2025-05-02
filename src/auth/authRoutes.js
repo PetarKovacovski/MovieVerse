@@ -1,6 +1,6 @@
 import express from "express"
-import * as c from "../controllers/authController.js"
-import validateObjectId from "../middlewares/validateObjectId.js"
+import * as c from "./authController.js"
+import validateObjectId from "../middleware/validateObjectId.js"
 
 const router = express.Router()
 

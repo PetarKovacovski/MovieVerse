@@ -1,8 +1,8 @@
 import express from "express"
-import * as c from "../controllers/movieController.js"
-import validateObjectId from "../middlewares/validateObjectId.js";
-import isAdmin from "../middlewares/isAdmin.js"
-import auth from "../middlewares/auth.js";
+import * as c from "./movieController.js"
+import validateObjectId from "../middleware/validateObjectId.js";
+import isAdmin from "../middleware/isAdmin.js"
+import auth from "../middleware/auth.js";
 
 const router = express.Router();
 

@@ -1,6 +1,6 @@
-import User from "../models/user.js";
-import Movie from "../models/movie.js";
-import Rental from "../models/rental.js";
+import User from "../user/userModel.js";
+import Movie from "../movie/movieModel.js";
+import Rental from "./rentalModel.js";
 import mongoose from "mongoose"
 
 export async function getRentals(req, res) {

@@ -1,5 +1,5 @@
 import Joi from "joi"
-import Genre from "../models/genre.js"
+import Genre from "./genreModel.js"
 import mongoose from "mongoose"
 
 

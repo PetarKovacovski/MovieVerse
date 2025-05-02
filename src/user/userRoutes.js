@@ -1,7 +1,7 @@
 import express from "express";
-import * as c from "../controllers/userController.js";
-import auth from "../middlewares/auth.js";
-import isAdmin from "../middlewares/isAdmin.js";
+import * as c from "./userController.js";
+import auth from "../middleware/auth.js";
+import isAdmin from "../middleware/isAdmin.js";
 
 const router = express.Router();
 

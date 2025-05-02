@@ -3,9 +3,6 @@ import argon2 from "argon2"
 
 
 export async function postAuth(req, res) {
-    const { error } = User.joiValidateLogin(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
-
     const email = req.body.email.toLowerCase();
     const { password } = req.body;
   

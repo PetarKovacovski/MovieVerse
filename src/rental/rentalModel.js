@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import Joi from "joi"
 
 const rentalSchema = new mongoose.Schema({
     user: {
@@ -17,15 +16,5 @@ const rentalSchema = new mongoose.Schema({
 })
 
 const Rental = mongoose.model("Rental", rentalSchema);
-
-Rental.joiValidate = function (rental) {
-    const schema = Joi.object({
-        userId: Joi.string().length(24).hex().required(),
-        movieId: Joi.string().length(24).hex().required(),
-    });
-
-    return schema.validate(rental);
-}
-
 
 export default Rental;

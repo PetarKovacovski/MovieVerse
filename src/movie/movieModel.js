@@ -1,6 +1,5 @@
 import mongoose from "mongoose"
-import Joi from "joi"
-import { genreSchema } from "../genre/genreModel.js";
+
 const movieSchema = new mongoose.Schema({
     title: { type: String, required: true, minLength: 5, maxLength: 255 },
     genre: {
@@ -12,17 +11,5 @@ const movieSchema = new mongoose.Schema({
 }
 )
 const Movie = mongoose.model("Movie", movieSchema);
-
-Movie.joiValidate = function (movie) {
-    const schema = Joi.object({
-        title: Joi.string().min(5).max(255).required(),
-        genreId: Joi.string().length(24).hex().required(),
-        numberInStock: Joi.number().required().positive(),
-        dailyRentalRate: Joi.number().required().positive()
-    });
-
-    return schema.validate(movie);
-}
-
 
 export default Movie;

@@ -17,9 +17,7 @@ export async function getMovie(req, res) {
 
 
 export async function postMovie(req, res) {
-    const { error } = Movie.joiValidate(req.body)
-    if (error) return res.status(400).send(error.details[0].message);
-
+    
     let genre = await Genre.findById(req.body.genreId)
     if (!genre) return res.status(404).send("GenreID not found");
 
@@ -40,10 +38,6 @@ export async function postMovie(req, res) {
 
 export async function putMovie(req, res) {
     const id = req.params.id;
-
-    const { error } = Movie.joiValidate(req.body)
-    if (error) return res.status(400).send(error.details[0].message);
-
 
     let genre = await Genre.findById(req.body.genreId)
     if (!genre) return res.status(404).send("GenreID not found");

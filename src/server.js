@@ -1,13 +1,13 @@
-import env from "./src/config/validateEnv.js"
+import env from "./config/validateEnv.js"
 import express from "express"
-import logger from "./src/middleware/logger.js"
-import genresRouter from "./src/genre/genreRoutes.js"
-import usersRouter from "./src/user/userRoutes.js"
-import moviesRouter from "./src/movie/movieRoutes.js"
-import rentalsRouter from "./src/rental/rentalRoutes.js"
-import authRouter from "./src/auth/authRoutes.js"
+import logger from "./middleware/logger.js"
+import genresRouter from "./genre/genreRoutes.js"
+import usersRouter from "./user/userRoutes.js"
+import moviesRouter from "./movie/movieRoutes.js"
+import rentalsRouter from "./rental/rentalRoutes.js"
+import authRouter from "./auth/authRoutes.js"
 import mongoose from "mongoose"
-import errorHandler from "./src/middleware/errorHandler.js"
+import errorHandler from "./middleware/errorHandler.js"
 
 
 try {
@@ -25,7 +25,7 @@ app.use(express.json());
 app.use(logger);
 
 
-app.use(express.static('./src/public'));
+app.use(express.static('../public'));
 
 app.use("/api/genres", genresRouter);
 app.use("/api/users", usersRouter);

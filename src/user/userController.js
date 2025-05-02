@@ -2,9 +2,7 @@ import User from "./userModel.js";
 
 
 export async function postUser(req, res) {
-    const { error } = User.joiValidate(req.body)
-    if (error) return res.status(400).send(`Not a valid user, ${error.details[0].message}`);
-
+    
     const { name, password } = req.body;
     const email = req.body.email.toLowerCase(); // lowercase safely
 

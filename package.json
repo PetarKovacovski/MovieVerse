@@ -2,10 +2,10 @@
   "name": "movie-verse",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/server.js",
   "scripts": {
-    "dev": "NODE_ENV=development node --env-file=.env.dev index.js",
-    "prod": "NODE_ENV=production node --env-file=.env.prod index.js"
+    "dev": "NODE_ENV=development node --env-file=.env.dev ./src/server.js",
+    "prod": "NODE_ENV=production node --env-file=.env.prod ./src/server.js"
   },
   "keywords": [],
   "author": "petski",
@@ -13,7 +13,6 @@
   "type": "module",
   "dependencies": {
     "argon2": "^0.43.0",
-    "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",

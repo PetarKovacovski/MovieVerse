@@ -9,9 +9,6 @@ export async function getRentals(req, res) {
 }
 export async function postRental(req, res) {
 
-    const { error } = Rental.joiValidate(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
-
     const { userId, movieId } = req.body;
 
     const session = await mongoose.startSession();

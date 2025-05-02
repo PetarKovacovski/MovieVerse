@@ -1,5 +1,4 @@
 import mongoose, { mongo } from "mongoose"
-import Joi from "joi"
 import argon2 from "argon2";
 import jwt from "jsonwebtoken"
 import env from "../config/validateEnv.js"
@@ -36,34 +35,11 @@ userSchema.methods.generateJWTToken = function () {
 
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
-
-  try {
-    this.password = await argon2.hash(this.password);
-    next();
-  } catch (err) {
-    next(err);
-  }
+  this.password = await argon2.hash(this.password);
+  next();
 });
 
-
 const User = mongoose.model("User", userSchema);
-
-User.joiValidate = function (user) {
-  const schema = Joi.object({
-    name: Joi.string().min(3).max(50).required(),
-    email: Joi.string().min(3).max(255).email().required(),
-    password: Joi.string().min(3).max(255).required() // Don't allow raw input over 255
-  });
-  return schema.validate(user);
-};
-
-User.joiValidateLogin = function (user) {
-  const schema = Joi.object({
-    email: Joi.string().min(3).max(255).email().required(),
-    password: Joi.string().min(3).max(255).required()
-  });
-  return schema.validate(user);
-};
 
 
 export default User;

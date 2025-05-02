@@ -1,4 +1,3 @@
-import Joi from "joi"
 import Genre from "./genreModel.js"
 import mongoose from "mongoose"
 

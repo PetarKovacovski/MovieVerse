@@ -13,5 +13,5 @@ if (error) {
   console.error("Invalid environment configuration:", error.message);
   process.exit(1);
 }
-console.log("AHHA");
+
 export default env;

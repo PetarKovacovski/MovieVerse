@@ -18,8 +18,6 @@ export async function getGenre(req, res) {
 }
 
 export async function postGenre(req, res) {
-    const { error } = Genre.joiValidate(req.body);
-    if (error) return res.status(400).send(`Not a valid genre, ${error.details[0].message}`);
 
     const genre = new Genre({
         name: req.body.name
@@ -31,9 +29,6 @@ export async function postGenre(req, res) {
 
 export async function putGenre(req, res) {
     const id = req.params.id
-
-    const { error } = Genre.joiValidate(req.body);
-    if (error) return res.status(400).send(`Not a valid genre, ${error.details[0].message}`);
 
     const genre = await Genre.findById(id);
     if (!genre) return res.status(404).send(`Genre with ID ${id} not found`);

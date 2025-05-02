@@ -9,19 +9,19 @@ import authRouter from "./routes/auth.js"
 import mongoose from "mongoose"
 
 
-try{
+try {
     await mongoose.connect(env.DB_URI);
     console.log("Connected to DB");
 }
-catch(e){
+catch (e) {
     console.log("Error connecting to DB", e);
     process.exit(1)
 }
 
 const app = express();
 
-app.use(express.json()); 
-app.use(logger)
+app.use(express.json());
+app.use(logger);
 
 
 app.use(express.static('./public'));
@@ -34,7 +34,7 @@ app.use("/api/auth", authRouter);
 
 app.listen(
     env.PORT,
-    ()=>{
+    () => {
         console.log(`App running on PORT: ${env.PORT}`);
     }
 ).on('error', (err) => {

@@ -18,5 +18,4 @@ export async function postAuth(req, res) {
     const token = user.generateJWTToken();
 
     res.send(token);
-
 }

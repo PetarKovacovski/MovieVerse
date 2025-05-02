@@ -36,20 +36,19 @@ export async function getUsers(req, res) {
     }
 }
 
-// export async function getUser(req, res){
-//     const id = req.params.id
-//     if (!isValidObjectId(id)) return res.status(400).send("Invalid ID format");
+export async function getUser(req, res){
 
-//     try {
-//         const result = await User.findById(id);
-//         if(!result) return res.status(404).send("ID NOT FOUND");
-//         res.send(result);
-//     }
-//     catch (e) {
-//         console.log("Error loading user from DB", e.message);
-//         res.sendStatus(500);
-//     }
-// }
+    const id = req.user._id;
+    try {
+        const result = await User.findById(id);
+        if(!result) return res.status(404).send("ID NOT FOUND");
+        res.send(result);
+    }
+    catch (e) {
+        console.log("Error loading user from DB", e.message);
+        res.sendStatus(500);
+    }
+}
 
 
 // export async function putUser(req, res) {

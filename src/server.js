@@ -1,45 +1,20 @@
-import env from "./config/validateEnv.js"
-import express from "express"
-import logger from "./middleware/logger.js"
-import genresRouter from "./genre/genreRoutes.js"
-import usersRouter from "./user/userRoutes.js"
-import moviesRouter from "./movie/movieRoutes.js"
-import rentalsRouter from "./rental/rentalRoutes.js"
-import authRouter from "./auth/authRoutes.js"
-import mongoose from "mongoose"
-import errorHandler from "./middleware/errorHandler.js"
+import app from './app.js';
+import config from './config/index.js';
+import { connectDB } from './config/connectDB.js';
+import mongoose from 'mongoose';
 
+await connectDB(config.dbUri);
 
-try {
-    await mongoose.connect(env.DB_URI);
-    console.log("Connected to DB");
-}
-catch (e) {
-    console.log("Error connecting to DB", e);
-    process.exit(1)
-}
+const server = app.listen(config.port, () => {
+    console.log(`✅ Server running on port ${config.port}`);
+});
 
-const app = express();
-
-app.use(express.json());
-app.use(logger);
-
-
-app.use(express.static('../public'));
-
-app.use("/api/genres", genresRouter);
-app.use("/api/users", usersRouter);
-app.use("/api/movies", moviesRouter);
-app.use("/api/rentals", rentalsRouter);
-app.use("/api/auth", authRouter);
-app.use(errorHandler);
-
-
-app.listen(
-    env.PORT,
-    () => {
-        console.log(`App running on PORT: ${env.PORT}`);
-    }
-).on('error', (err) => {
-    console.error("Server failed to start:", err);
+process.on('SIGINT', async () => {
+    console.log('\n\nShutting down process...');
+    await mongoose.connection.close();
+    console.log('MongoDB disconnected');
+    server.close(() => {
+        console.log('***Server closed***');
+        process.exit(0);
+    });
 });

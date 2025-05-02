@@ -1,7 +1,7 @@
 import mongoose, { mongo } from "mongoose"
 import argon2 from "argon2";
 import jwt from "jsonwebtoken"
-import env from "../config/validateEnv.js"
+import config from "../config/index.js"
 import { JWT_EXPIRES_IN } from "../shared/constants.js";
 
 const userSchema = new mongoose.Schema({
@@ -28,7 +28,7 @@ userSchema.methods.generateJWTToken = function () {
       email: this.email,
       isAdmin: this.isAdmin,
     },
-    env.JWT_SECRET,
+    config.jwtSecret,
     { expiresIn: JWT_EXPIRES_IN }
   );
 }

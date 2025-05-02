@@ -1,5 +1,7 @@
 import User from "../models/user.js";
 import argon2 from "argon2"
+import jwt from "jsonwebtoken"
+import env from "../config/validateEnv.js"
 
 export async function postAuth(req, res) {
     const { error } = User.joiValidateLogin(req.body);
@@ -14,6 +16,8 @@ export async function postAuth(req, res) {
     const valid = await argon2.verify(user.password, password);
     if (!valid) return res.status(400).send("Invalid email or password.");
 
-    res.send("LOGGED INN");
+    const token = jwt.sign(user.toJSON(), env.JWT_SECRET);
+
+    res.send(token);
 
 }

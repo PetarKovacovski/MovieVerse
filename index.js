@@ -1,5 +1,5 @@
+import env from "./config/validateEnv.js"
 import express from "express"
-import dotenv from "dotenv"
 import logger from "./middlewares/logger.js"
 import genresRouter from "./routes/genres.js"
 import usersRouter from "./routes/users.js"
@@ -9,14 +9,13 @@ import authRouter from "./routes/auth.js"
 import mongoose from "mongoose"
 
 
-dotenv.config()
-
 try{
-    await mongoose.connect("mongodb://localhost/VIDLY");
+    await mongoose.connect(env.DB_URI);
     console.log("Connected to DB");
 }
 catch(e){
     console.log("Error connecting to DB", e);
+    process.exit(1)
 }
 
 const app = express();
@@ -33,11 +32,10 @@ app.use("/api/movies", moviesRouter);
 app.use("/api/rentals", rentalsRouter);
 app.use("/api/auth", authRouter);
 
-const PORT = process.env.PORT ?? 3000;
 app.listen(
-    PORT,
+    env.PORT,
     ()=>{
-        console.log(`App running on PORT: ${PORT}`);
+        console.log(`App running on PORT: ${env.PORT}`);
     }
 ).on('error', (err) => {
     console.error("Server failed to start:", err);

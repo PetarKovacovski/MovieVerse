@@ -7,7 +7,7 @@ export async function postUser(req, res) {
     if (error) return res.status(400).send(`Not a valid user, ${error.details[0].message}`);
 
     const { name, password } = req.body;
-    const email = req.body.email.toLowerCase(); // ✅ lowercase safely
+    const email = req.body.email.toLowerCase(); // lowercase safely
 
     const existingUser = await User.findOne({ email: email });
     if (existingUser) return res.status(400).send("Email already registered.");

@@ -14,7 +14,6 @@ export async function postRental(req, res) {
 
     const { userId, movieId } = req.body;
 
-
     const session = await mongoose.startSession();
     session.startTransaction();
     try {
@@ -47,9 +46,7 @@ export async function postRental(req, res) {
     catch (e) {
         await session.abortTransaction();
         session.endSession();
-        console.error("Transaction failed:", e);
-        res.status(500).send("Internal Server Error");
-
+        throw (err);
     }
     finally {
         session.endSession();

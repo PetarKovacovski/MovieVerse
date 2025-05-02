@@ -1,4 +1,3 @@
-import { isObjectIdOrHexString, isValidObjectId } from "mongoose";
 import User from "./userModel.js";
 
 
@@ -14,40 +13,23 @@ export async function postUser(req, res) {
 
     const user = new User({ name, email, password,})
 
-    try {
-        const result = await user.save(); // password hashed in pre("save")
-        res.send(result); // safe due to toJSON override
-    }
-    catch (e) {
-        console.log("Error saving user to DB", e.message);
-        res.sendStatus(500);
-    }
+    const result = await user.save(); // password hashed in pre("save")
+    res.send(result); // safe due to toJSON override
+
 }
 
 
 export async function getUsers(req, res) {
-    try {
-        const result = await User.find({});
-        res.send(result);
-    }
-    catch (e) {
-        console.log("Error loading users from DB", e.message);
-        res.sendStatus(500);
-    }
+    const result = await User.find({});
+    res.send(result);
 }
 
 export async function getUser(req, res){
 
     const id = req.user._id;
-    try {
-        const result = await User.findById(id);
-        if(!result) return res.status(404).send("ID NOT FOUND");
-        res.send(result);
-    }
-    catch (e) {
-        console.log("Error loading user from DB", e.message);
-        res.sendStatus(500);
-    }
+    const result = await User.findById(id);
+    res.send(result);
+
 }
 
 

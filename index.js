@@ -7,6 +7,7 @@ import moviesRouter from "./src/movie/movieRoutes.js"
 import rentalsRouter from "./src/rental/rentalRoutes.js"
 import authRouter from "./src/auth/authRoutes.js"
 import mongoose from "mongoose"
+import errorHandler from "./src/middleware/errorHandler.js"
 
 
 try {
@@ -31,6 +32,8 @@ app.use("/api/users", usersRouter);
 app.use("/api/movies", moviesRouter);
 app.use("/api/rentals", rentalsRouter);
 app.use("/api/auth", authRouter);
+app.use(errorHandler);
+
 
 app.listen(
     env.PORT,

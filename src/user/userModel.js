@@ -3,6 +3,7 @@ import Joi from "joi"
 import argon2 from "argon2";
 import jwt from "jsonwebtoken"
 import env from "../config/validateEnv.js"
+import { JWT_EXPIRES_IN } from "../shared/constants.js";
 
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true, minlength: 3, maxlength: 50 },
@@ -29,7 +30,7 @@ userSchema.methods.generateJWTToken = function () {
       isAdmin: this.isAdmin,
     },
     env.JWT_SECRET,
-    { expiresIn: "1h" }
+    { expiresIn: JWT_EXPIRES_IN }
   );
 }
 

@@ -12,7 +12,9 @@ export async function postUser(req, res) {
     const user = new User({ name, email, password,})
 
     const result = await user.save(); // password hashed in pre("save")
-    res.send(result); // safe due to toJSON override
+    
+    const token = user.generateJWTToken();  //can login immidiately after register
+    res.status(201).header("x-auth-token", token).send(result); // safe due to toJSON override
 
 }
 

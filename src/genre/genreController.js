@@ -22,7 +22,7 @@ export async function postGenre(req, res) {
         name: req.body.name
     });
     const dbAns = await genre.save();
-    res.send(dbAns);
+    res.status(201).send(dbAns);
 
 };
 

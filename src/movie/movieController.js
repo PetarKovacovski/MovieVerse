@@ -32,7 +32,7 @@ export async function postMovie(req, res) {
     });
 
     const result = await movie.save();
-    res.send(result);
+    res.status(201).send(result);
 }
 
 

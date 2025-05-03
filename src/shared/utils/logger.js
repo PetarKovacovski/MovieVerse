@@ -4,6 +4,7 @@ const { combine, timestamp, printf, colorize, errors } = format;
 
 const isDev = process.env.NODE_ENV === "development";
 const isProd = process.env.NODE_ENV === "production";
+const isTest = process.env.NODE_ENV === "test";
 
 const devFormat = combine(
   colorize({ all: true }),
@@ -23,21 +24,23 @@ const prodFormat = combine(
 );
 
 const logger = createLogger({
-  level: "info",
-  format: prodFormat,
-  transports: [
-    new transports.Console({
-      format: isDev ? devFormat : prodFormat
-    }),
-    ...(isProd
-      ? [
-          new transports.File({ filename: "logs/error.log", level: "error" }),
-          new transports.File({ filename: "logs/combined.log" })
-        ]
-      : [])
-  ],
-  exitOnError: false
-});
+    level: isTest ? "error" : "info", // only log errors in tests
+    format: prodFormat,
+    transports: [
+      new transports.Console({
+        silent: process.env.NODE_ENV === "test",
+        format: isDev ? devFormat : prodFormat
+      }),
+      ...(isProd
+        ? [
+            new transports.File({ filename: "logs/error.log", level: "error" }),
+            new transports.File({ filename: "logs/combined.log" })
+          ]
+        : [])
+    ],
+    exitOnError: false
+  });
+  
 
 process.on("uncaughtException", (err) => {
     logger.error("Uncaught Exception");

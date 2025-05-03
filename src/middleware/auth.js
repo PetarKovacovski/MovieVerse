@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import config from "../config/index.js";
+import logger from "../shared/utils/logger.js";
 
 export default function auth(req, res, next) {
     const authHeader = req.header("Authorization");
@@ -11,7 +12,7 @@ export default function auth(req, res, next) {
         next();
     }
     catch (ex) {
-        console.error("JWT verification failed:", ex.message);
+        logger.error("JWT verification failed:", ex.message);
         res.status(400).send("Invalid token.");
     }
 }

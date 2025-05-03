@@ -1,4 +1,5 @@
 import Joi from "joi";
+import logger from "../shared/utils/logger.js";
 
 const envSchema = Joi.object({
   NODE_ENV: Joi.string().valid("development", "production").required(),
@@ -10,7 +11,7 @@ const envSchema = Joi.object({
 const { error, value: env } = envSchema.validate(process.env);
 
 if (error) {
-  console.error("Invalid environment configuration:", error.message);
+  logger.error("Invalid environment configuration:", error.message);
   process.exit(1);
 }
 

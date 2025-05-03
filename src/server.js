@@ -2,19 +2,21 @@ import app from './app.js';
 import config from './config/index.js';
 import { connectDB } from './config/connectDB.js';
 import mongoose from 'mongoose';
+import logger from './shared/utils/logger.js';
 
 await connectDB(config.dbUri);
 
+
 const server = app.listen(config.port, () => {
-    console.log(`✅ Server running on port ${config.port}`);
+    logger.info(`✅ Server running on port ${config.port}`);
 });
 
 process.on('SIGINT', async () => {
-    console.log('\n\nShutting down process...');
+    logger.info('Shutting down process...');
     await mongoose.connection.close();
-    console.log('MongoDB disconnected');
+    logger.info('MongoDB disconnected');
     server.close(() => {
-        console.log('***Server closed***');
+        logger.info('***Server closed***');
         process.exit(0);
     });
 });

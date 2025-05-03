@@ -1,8 +1,14 @@
-import morgan from "morgan";
-import config from "../config/index.js";
+import logger from "../shared/utils/logger.js";
 
-const logger = config.isProd
-  ? morgan('combined', { skip: () => true }) // disable logging in prod for now
-  : morgan('dev');
+export default function requestLogger(req, res, next) {
+  const start = process.hrtime();
 
-export default logger;
+  res.on("finish", () => {
+    const [sec, ns] = process.hrtime(start);
+    const ms = (sec * 1000 + ns / 1e6).toFixed(1);
+
+    logger.info(`${req.method} ${req.originalUrl} ${res.statusCode} - ${ms} ms`);
+  });
+
+  next();
+}

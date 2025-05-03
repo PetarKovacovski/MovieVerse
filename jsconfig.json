@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+      "target": "ES2022",
+      "module": "ES2022",
+      "moduleResolution": "Node",
+      "baseUrl": ".",         // Enables absolute imports (optional)
+      "paths": {
+        "@/*": ["src/*"]      // Optional alias: import from "@/utils/logger"
+      },
+      "checkJs": true,        // Enables type-checking in .js files
+      "allowJs": true,        // Allows JS files in the project
+      "noEmit": true          // Don't output anything — just analyze
+    },
+    "include": ["src", "tests"]
+  }
+  

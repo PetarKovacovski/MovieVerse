@@ -12,7 +12,8 @@ export default function auth(req, res, next) {
         next();
     }
     catch (ex) {
-        logger.error("JWT verification failed:", ex.message);
+        logger.error("JWT verification failed: ");
+        logger.error(ex.message);
         res.status(400).send("Invalid token.");
     }
 }
